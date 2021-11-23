@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="data/themes/header_footer_lab2.css">
+    <link rel="stylesheet" href="jquery.mobile-1.3.2.min.css"/>
+    <script src="jquery-1.12.4.min.js"></script>
+    <script src="jquery.mobile-1.3.2.min.js"></script>
+    <script type="text/javascript">
+    
+    
+        function getFacilitySummary(typeIndex){
+        $.getJSON("data/facilitiesSummary.json", function(data){
+            $("#stateList li").remove();
+            $.each(data, function(key, val){
+                var linkButton;
+                switch(typeIndex){
+                    case 1:
+                        linkButton = $("<a>").attr("href", "#choice_faci").attr("onclick", "getFacilityList(1, '" + key + "')").html(key);
+                        linkButton.append($("<span>").attr("class", "ui-li-count").html(val.cntOpclinics));
+                        break;
+                    case 2:
+                        linkButton = $("<a>").attr("href", "#choice_faci").attr("onclick", "getFacilityList(2, '" + key + "')").html(key);
+                        linkButton.append($("<span>").attr("class", "ui-li-count").html(val.cntVetCenters));
+                        break;
+                    default:
+                        linkButton = $("<a>").attr("href", "#choice_faci").attr("onclick", "getFacilityList(0, '" + key + "')").html(key);
+                        linkButton.append($("<span>").attr("class", "ui-li-count").html(val.cntHospitals));
+                        break;
+                } //switch(typeIndex)
+
+                $("<li>").append(linkButton).appendTo("#stateList");
+
+            }); //$.each
+
+            $("#stateList").listview("refresh");
+        }); // $.getJSON
+        } // function getFacilitySummary
+
+    </script>
+    <script>
+        function getFacilityList(typeIndex, keyStateName){
+            var jsonFileUrl;
+            switch(typeIndex){
+                case 1:
+                    jsonFileUrl = "data/clinics.json";
+                    break;
+                case 2:
+                    jsonFileUrl = "data/vetCenters.json";
+                    break;
+                default: 
+                    jsonFileUrl = "data/hospitals.json";
+            } //switch(typeIndex)
+
+            $.getJSON(jsonFileUrl, function(data){
+                $("#facilityList li").remove();
+                val = data[keyStateName];
+
+                for(var i=0; i < val.length; i++){
+                    var linkButton = $("<a>").attr("href", "#faci_details").html(val[i].name);
+
+                    linkButton.append($("<img>").attr("src", val[i].imageURL));
+                    $("<li>").append(linkButton).appendTo("#facilityList");
+                }
+                
+                $("#facilityList").listview("refresh");
+            }); //$.getJSON
+        }
+    </script>
+   
+                
+    <title>VA Medical Facility Finder</title>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+    <link rel="shortcut icon" href="images/hospitals.png" /> <!-- favi.ico -->
+    <link rel="apple-touch-icon" href="images/hospitals.png" />
+</head>
+
+<body>
+    <div id="home" data-role="page" data-add-back-btn="true">
+
+        <header data-role="header" data-theme="b">
+            <h1>VA Medical Facility Finder</h1>
+        </header>
+
+        <div data-role="content">
+
+            <h2>What do you want to find?</h2>
+        
+            <ul data-role="listview" data-inset="true">
+                <li><a href="#choice_state" onclick="getFacilitySummary(0)">Hospital</a></li>
+                <li><a href="#choice_state" onclick="getFacilitySummary(1)">Outpatient Clinic</a></li>
+                <li><a href="#choice_state" onclick="getFacilitySummary(2)">Vet Center</a></li>
+            </ul>
+            <footer data-role="footer" data-theme="b">
+                    <p>
+                        &copy; Copyright by kwalsh
+                    </p>
+                </footer>    
+        </div>
+    </div>
+        
+        <div id="choice_state" data-role="page" data-add-back-btn="true">
+            <header data-role="header" data-theme="b">
+                <h1> VA Medical Facility Finder</h1>
+            </header>
+
+            <div data-role="content">
+                <h2>In which state you want to find?</h2>
+
+                <ul id="stateList" data-role="listview" data-inset="true" data-filter="true">
+                </ul>           
+            </div>
+
+            <footer data-role="footer" data-theme="b">
+                    <p>
+                        &copy; Copyright by kwalsh
+                    </p>
+                </footer>
+
+        </div> <!-- page choice_state -->
+
+        <div id="choice_faci" data-role="page" data-add-back-btn="true">    
+            <header data-role="header" data-theme="b">
+                <h1> VA Medical Facility Finder</h1>
+            </header>
+
+            <div data-role="content">
+
+                <h2>Please select a facility</h2>
+            
+                <ul id="facilityList" data-role="listview" data-inset="true">
+                </ul>
+
+            </div>
+            <footer data-role="footer" data-theme="b">
+                    <p>
+                        &copy; Copyright by kwalsh
+                    </p>
+                </footer>
+        </div>
+        <footer data-role="footer" data-theme="b">
+            <p>
+                &copy; Copyright by kwalsh
+            </p>
+        </footer>
+
+    </div> <!-- page choice_state-->
+
+    
+
+    </div>
+</body>
+</html>
