@@ -1,0 +1,91 @@
+---
+title: "Establishing Floodzones and Potential Constructed Wetlands for Wastewater Management"
+author: Kaitlin Walsh
+subtitle: A study of Seneca Nation
+---
+
+# Introduction
+Cattauragus Creek floods causing social, financial, and environmental issues; to mitigate this, first the areas which are most likely to flood must be found. DEM's, precipitation, soils, vegetation, temperature, and LULC will be obtianed from NOAA and FedData, then overlaid on the Seneca Nation .shp in order to identify results of where a Constructed Wetland would be suitable.  
+This is the study area: Cattauragus Creek.  It flows into Lake Erie and affects many stakeholders along the Creek Coast, and the coast of Lake Erie.  Stakeholders include the Seneca Nation, the Army Corps of Engineers, citizens and business owners of Sunset Bay, and local, State, and Federal Government.
+![](https://gardenwarriorsgoodseeds.files.wordpress.com/2015/01/mapphoto.jpg)
+
+
+
+# Materials and methods
+
+* Shapefile of Seneca Nation
+* Filter elevation shapefiles
+* Filtering elevations
+* Filtering for precipitation
+* Establishing Flood Zones in Seneca Nation
+* Filtering by soil type
+* Filtering by vegetation type
+* Filtering by temperature/ date ( if ground is frozen, can't establish constructed wastelands)
+* Creating possible constructed wetland areas by selection/joining of filtered topics 
+
+
+
+
+```{r, message=F, warning=F}
+library(raster)
+library(sp)
+library(rgdal)
+library(ggplot2)
+library(ggmap)
+library(dplyr)
+library(tidyr)
+library(maps)
+library(scales)
+library(sf)
+library(rnoaa)
+#install.packages("climdex.pcic")
+#install.packages("zoo")
+#install.packages("reshape2")
+#install.packages("leaflet")
+library(leaflet)
+
+#install.packages("DT")
+#install.packages("widgetframe")
+library(DT)
+library(widgetframe)
+library(climdex.pcic)
+library(zoo)
+library(reshape2)
+library(broom)
+#install.packages("FedData")
+library(FedData)
+
+
+knitr::opts_chunk$set(cache=TRUE)  # cache the results for quick compiling
+
+SNI <- st_read("Data/CattaraugusSNI.shp")
+#SNI.trans <- st_transform(SNI, st_crs(4326))
+plot(SNI, max.plot = 10)
+```
+
+
+
+
+```{r, warning=F} 
+
+library(DataScienceData)
+lulcf=system.file("extdata", 
+                "appeears/MCD12Q1.051_aid0001.nc", 
+                package = "DataScienceData")
+lulcf
+
+lulc=stack(lulcf,varname="Land_Cover_Type_1")
+plot(lulc)
+
+# Results
+
+
+```
+
+```{r}
+
+```
+
+
+# References
+
